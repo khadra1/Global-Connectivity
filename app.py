@@ -1,7 +1,7 @@
 from flask import Flask
 from sqlalchemy import create_engine
 from flask_sqlalchemy import SQLAlchemy
-import psycopg2
+# import psycopg2
 from scripts.main import load_data
 
 app = Flask(__name__)
