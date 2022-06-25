@@ -13,6 +13,7 @@ def connection():
     db= create_engine(db_url)
     conn= db.connect()
     df = load_data()
+    print(df)
     df.to_sql('data', con=conn, if_exists='replace',index=False)
     # conn = psycopg2.connect()
 @app.route("/")
