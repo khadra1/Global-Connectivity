@@ -12,6 +12,7 @@ def load_data():
     coordinates = pd.read_csv(data_path)
 
     final_world = pd.merge(world_data, coordinates, on="Country")
+    print(final_world)
     return final_world
 # print (load_data())
 
