@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from sqlalchemy import create_engine
 from flask_sqlalchemy import SQLAlchemy
 # import psycopg2
@@ -19,7 +19,7 @@ def connection():
 @app.route("/")
 def hello_world():
     connection()
-    return "<p>Hello, World!</p>"
+    return render_template("index.html")
 
 if __name__ == "__main__":
     app.run()
