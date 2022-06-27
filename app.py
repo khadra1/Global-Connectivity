@@ -19,9 +19,10 @@ def create_database():
 @app.route("/")
 def hello_world():
     create_database()
+    data={"name": "data"}
 
 
-    return render_template("index.html")
+    return render_template("index.html", data=data)
 
 if __name__ == "__main__":
     app.run()
