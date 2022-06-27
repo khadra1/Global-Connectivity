@@ -9,7 +9,7 @@ db_url = "postgresql://njuguscorkabpk:14f0dd2bc05cce718487cbff320b81dd7088ba958a
 app.config["SQLALCHEMY_DATABASE_URI"] = db_url
 db = SQLAlchemy(app)
 
-def connection():
+def create_database():
     db= create_engine(db_url)
     conn= db.connect()
     df = load_data()
@@ -18,7 +18,9 @@ def connection():
     # conn = psycopg2.connect()
 @app.route("/")
 def hello_world():
-    connection()
+    create_database()
+
+
     return render_template("index.html")
 
 if __name__ == "__main__":
