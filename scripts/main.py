@@ -20,8 +20,10 @@ def load_data():
     coordinates.drop(columns=["Unnamed: 0", "country"],inplace=True)
     # Merge the world_data with the coordinates
     final_world = pd.merge(world_data, coordinates, on="Codes", how="left")
+    final_world.drop(columns=['Series Code', 'Codes'], axis=1, inplace=True)
+    cols = [2,3,4,5,6,7,8,9,10]
+    final_world.drop(final_world.columns[cols],axis=1,inplace=True)
     #Import the regions data from csv file
-    # world_regions = pd.read_csv("../Resources/data-raw/Data_Extract_From_World_Development_Indicators/world_bank_internet_data.csv", skiprows=range(1,1954), skipfooter=5)
     data_path = os.path.join(os.path.dirname(__file__), '..', 'data', "world_bank_internet_data.csv")
     world_regions = pd.read_csv(data_path, skiprows=range(1,1954), skipfooter=5)
     # Replace all ".." with 0
@@ -30,6 +32,8 @@ def load_data():
     world_regions.rename(columns={"Country Name": "Country", "Country Code": "Codes"}, inplace=True)
     # # Remove the brackets and the duplicated value in the Year columns 
     world_regions = world_regions.rename(columns={col: col.split('[')[0] for col in world_regions.columns})
+    world_regions.drop(columns=['Series Code', 'Codes'], axis=1, inplace=True)
+    world_regions.drop(world_regions.columns[cols],axis=1,inplace=True)
     
     output["world"]=final_world.to_json()
     output["world_regions"]=world_regions.to_json()

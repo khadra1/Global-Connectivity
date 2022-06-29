@@ -2,7 +2,7 @@ import pandas as pd
 
 def clean_data():
     # Import the world internet data from world bank and rename columns for merging with location data
-    world_data= pd.read_csv("../data/world_bank_internet_data.csv", skiprows=[2395,2396,2397,2398,2399,2400])
+    world_data= pd.read_csv("../data/world_bank_internet_data.csv", skipfooter=433])
     world_data = world_data.replace("..",0)
     world_data.rename(columns={"Country Name": "Country", "Country Code": "Codes"}, inplace=True)
     #Import the coordinate csv file, rename columns for merging with each other later on

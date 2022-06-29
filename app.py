@@ -18,11 +18,12 @@ def create_database():
     # conn = psycopg2.connect()
 @app.route("/")
 def hello_world():
-    create_database()
-    data={"name": "data"}
+    # create_database()
+    data = load_data()
+    # data={"name": "data"}
 
 
-    return render_template("index.html", data=data)
+    return render_template("map.html", data=data)
 
 if __name__ == "__main__":
     app.run()
