@@ -1,45 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <title>Dashboard</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="../static/css/style.css" />
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-        integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-        crossorigin="" />
-
-    <!-- Leaflet JavaScript code -->
-    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-        integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-        crossorigin=""></script>
-    <!-- D3 JavaScript -->
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Basic Charts</title>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script type="text/javascript">
         let alldata = {{ data| tojson }};
-        let alldataworld = JSON.parse(alldata.world);
-        let alldataregions = JSON.parse(alldata.world_regions);
+        // let alldataworld = JSON.parse(alldata);
     </script>
-    
-    
-
-
 </head>
-
 <body>
-    <div id="container" class="container">
-        <div id="top" class="container_left"></div>
-        <div class="container_right">
-            <div></div>
-            <div></div>
-            <div></div>
-
-        </div>
-    </div>
+    <form action="{{ url_for("plot_chart") }}" method="post">
+        <select name="filter1">
+            {% for o in data['filter1list'] %}
+            <option value="{{ o }}" {{ 'selected="selected"' if o==data['filter1']}}>{{ o }}</option>
+            {% endfor %}
+        </select>
+        <select name="filter2">
+            {% for o in data['filter2list'] %}
+            <option value="{{ o }}" {{ 'selected="selected"' if o==data['filter2']}}>{{ o }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+    <div id="plot"></div>
     <script type="text/javascript" src="../static/js/app.js"></script>
 </body>
-
 </html>
