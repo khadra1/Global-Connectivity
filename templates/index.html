@@ -10,6 +10,12 @@
         let alldata = {{ data| tojson }};
         // let alldataworld = JSON.parse(alldata);
     </script>
+    <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/data.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+    <script src="https://code.highcharts.com/maps/modules/accessibility.js"></script>
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
 <body>
     <form action="{{ url_for("plot_chart") }}" method="post">
@@ -26,6 +32,29 @@
         <input type="submit" value="Submit">
     </form>
     <div id="plot"></div>
+
+    <div id="container-map">
+        <div class="loading">
+            <i class="icon-spinner icon-spin icon-large"></i>
+            Loading data from World Bank...
+        </div>
+    </div>
+
+
     <script type="text/javascript" src="../static/js/app.js"></script>
+    <script type="text/javascript">
+   
+        // current here we are filtering record by year
+      filterResult = Object.values(JSON.parse(alldata.dataWorld)).filter(jd => jd.Year === 2020 );
+    //   let filterResult = JSON.parse(alldata.dataWorld);
+      console.log("filterResult = " + filterResult);
+      console.log("alldata =" + alldata.dataWorld);
+      const jData = filterResult.map((value,index) => ({
+            code: value.Codes.toUpperCase(),
+            value: parseFloat(value.Values), 
+            name: value.Country
+          }));
+          drawChart(jData);
+    </script>
 </body>
 </html>
