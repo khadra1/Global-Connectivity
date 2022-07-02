@@ -21,7 +21,7 @@ def plot_chart():
         filter1 = request.form.get("filter1")
         filter2 = request.form.get("filter2")
         data = load_data(filter1,filter2)
-        return render_template("map.html", data=data)
+        return render_template("index.html", data=data)
     data = load_data('Fixed broadband subscriptions','Zimbabwe')
     return render_template("index.html", data=data)
 if __name__ == "__main__":
