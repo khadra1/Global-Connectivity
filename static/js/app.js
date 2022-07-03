@@ -1,4 +1,4 @@
-console.log("tracedata =" + alldata.tracedata)
+console.log("alldata =" + alldata)
 let title = alldata.filter1;
 let trace1 = {
 x: alldata.x,
@@ -26,7 +26,7 @@ async function drawChart(data1, year) {
         colors: ['#004c6d','#2d6484', '#4c7c9b' ,'#6996b3' , '#86b0cc ','#a3cbe5', '#c1e7ff]'],
   
         title: {
-          text: title + year
+          text: title + " " + year
         },
   
         mapNavigation: {
@@ -100,56 +100,40 @@ async function drawChart(data1, year) {
         }]
       });
     };
+    
+        let titleLine = alldata.filter1;
+        let traceLine = {
+        x: alldata.x,
+        y: alldata.y,
+        type: 'scatter'
+        };
+        let dataLine = [traceLine];
+        let layoutLine = {
+        title: titleLine
+        };
+        Plotly.newPlot("line-plot", dataLine,layout);
+    
 
-  
-  // let yDataRegion = "Individuals using the Internet"
-  let traceAfrica = {
-      x: [2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021],
-      y: alldata.tracedata.IndividualsusingtheInternet.Africa,
-      mode: 'lines+markers',
-      connectgaps: true
-    };
+        let titlebBar = alldata.filter1;
+        let traceBar = {
+        x: alldata.x,
+        y: alldata.y,
+        type: 'scatter'
+        };
+        let dataBar = [traceBar];
+        let layoutBar = {
+        title: titleLine
+        };
+        Plotly.newPlot("bar-plot", dataBar,layoutBar);
     
-    let traceAmericas = {
-      x: [2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021],
-      y: tracedata.yDataRegion.Americas,
-      mode: 'lines',
-      connectgaps: true
-    };
-
-  let traceArabStates = {
-    x: [2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021],
-    y: tracedata.yDataRegion.ArabStates,
-    mode: 'lines+markers',
-    connectgaps: true
-  };
-  
-  let traceAsiaPacicific = {
-    x: [2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021],
-    y: tracedata.yDataRegion.Asia-Pacicific,
-    mode: 'lines',
-    connectgaps: true
-  };
-  let traceCIS = {
-    x: [2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021],
-    y: tracedata.yDataRegion.CIS,
-    mode: 'lines+markers',
-    connectgaps: true
-  };
-  
-  let traceEurope = {
-    x: [2005,2006,2007,2008,2009,2010,2011,2012,2013,2014,2015,2016,2017,2018,2019,2020,2021],
-    y: tracedata.yDataRegion.Europe,
-    mode: 'lines',
-    connectgaps: true
-    };
-    
-    let regionData = [traceAfrica, traceAmericas,traceArabStates, traceAsiaPacific,traceCIS, traceEurope];
-    
-    var layoutRegion = {
-      title: 'Individuals Using the Internet (millions)',
-      showlegend: false
-    };
-    
-    Plotly.newPlot('myDiv', regionData, layoutRegion);
-  
+        let titlePie = alldata.filter1;
+        let tracePie = {
+        x: alldata.x,
+        y: alldata.y,
+        type: 'scatter'
+        };
+        let dataPie = [tracePie];
+        let layoutPie = {
+        title: titleLine
+        };
+        Plotly.newPlot("pie-plot", dataPie,layoutPie);

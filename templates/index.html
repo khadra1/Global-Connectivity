@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Basic Charts</title>
+    <title>Dashboard</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.css"
@@ -16,11 +16,9 @@
         crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">
         let alldata = {{ data| tojson }};
+        
         // let alldataworld = JSON.parse(alldata);
     </script>
-    <!-- <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://code.highcharts.com/modules/exporting.js"></script>
-    <script src="https://code.highcharts.com/modules/export-data.js"></script> -->
     <script src="https://code.highcharts.com/maps/highmaps.js"></script>
     <script src="https://code.highcharts.com/maps/modules/data.js"></script>
     <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
@@ -32,6 +30,7 @@
 
 <body>
     <div class="sidenav">
+
         <a href="#">Individuals using the Internet (% of population)</a>
         <a href="#">Secure Internet servers</a>
         <a href="#">Secure Internet servers (per 1 million people)</a>
@@ -42,11 +41,12 @@
         <a href="#">Fixed telephone subscriptions</a>
         <a href="#">Fixed telephone subscriptions (per 100 people)</a>
     </div>
+
+
     <div class="main">
-        <div style="border: 1px solid black; height: 700px;">
-
-
-            <div style="float: left; width: 800px; height: 700px; border-right: 1px solid black; position: relative;">
+        <div>
+            <div class="chart countries">
+                
                 <div>
                     <form action="{{ url_for("plot_chart") }}" method="post">
                         <select name="filter1">
@@ -58,46 +58,40 @@
                             {% for o in data['filter2list'] %}
                             <option value="{{ o }}" {{ 'selected="selected"' if o==data['filter2']}}>{{ o }}</option>
                             {% endfor %}
-                        </select>
+                        </select> 
                         <input type="submit" value="Submit">
                     </form>
                 </div>
-                <div style="width: 800px;">
+                <div>
                     <div id="plot"></div>
                 </div>
             </div>
 
-            <div style="float: left; width: 800px; height: 700px;">
+            <div class="chart map">
                 <div id="container-map">
                     <div class="loading">
                         <i class="icon-spinner icon-spin icon-large"></i>
                         Loading data from World Bank...
                     </div>
                 </div>
+                <p> World Map</p>
                 <div>
                     <input type="range" min="2000" max="2020" step="1" value="2000" data-orientation="vertical"
                         name="year" onchange="updateChart(this.value)">
                 </div>
             </div>
-        </div>
-        <div
-            style="clear:both; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; height: 900px;">
-            <div style="width: 800px; float: left; border-right: 1px solid; height: 900px;"> Pie chart</div>
-            <div style="width: 800px; float: left; border-right: 1px solid; height: 900px;"> Line chart</div>
-            <div style="width: 300px; float: left; height: 900px;">
-                <div id='myDiv'></div>
-               
-            </div>
-
-
-
-        </div>
+            <!-- <div style="clear:both;"> -->
+                 <div class="chart plot" id="pie-plot"></div>
+                 <div class="chart plot" id="bar-plot"></div>
+                 <div class="chart plot" id="line-plot"></div>
+                </div>
+        <!-- </div> -->
     </div>
 
     <script type="text/javascript" src="../static/js/app.js"></script>
     <script type="text/javascript">
 
-        // current here we are filtering record by year
+        // filtering record by Year and Series Name
         // console.log("title =" + title)
         function updateChart(year) {
             console.log("year=" + year);
@@ -105,11 +99,19 @@
             //   let filterResult = JSON.parse(alldata.dataWorld);
             console.log("filterResult = " + filterResult);
             // console.log("alldata =" + alldata.dataWorld);
+            // let maxValue = 0;
             const jData = filterResult.map((value, index) => ({
                 code: value.Codes.toUpperCase(),
                 value: parseFloat(value.Values),
                 name: value.Country
             }));
+         
+         
+// for (var i in filterResult) {
+//   maxValue += filterResult[i].Values;
+// }
+//             console.log("maxValue=" +maxValue);
+
             drawChart(jData, year);
         };
         updateChart(2000);
