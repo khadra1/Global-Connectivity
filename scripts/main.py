@@ -1,6 +1,7 @@
 import pandas as pd
 import os
 import json
+from json import dumps
 
 
 def load_data(filter1, filter2):
@@ -131,7 +132,20 @@ def load_data(filter1, filter2):
     # output['Longitude'] = world['Longitude'].tolist()
     # output['Latitude'] = world['Latitude'].tolist()
     # output['Year'] = world['Year'].tolist()
+    print (table_list)
     # output['Region'] = region_df['Individuals using the Internet'].tolist()
+    
+    tracedata = {}
+    table_list_keys = list(table_list.keys())
+    for i in range(len(table_list_keys)):
+        tempdf = table_list[table_list_keys[i]]
+        print("tempdf", tempdf)
+        regions = tempdf[table_list_keys[i]].tolist()
+        tempregions = {}
+        for j in range(len(regions)):
+            tempregions[regions[j]] = tempdf.values.tolist()[j][1:]
+        tracedata[table_list_keys[i]] = tempregions
+    output['tracedata'] = json.dumps(tracedata)
     # output['world1']=world1.to_json(orient='index', indent=4)
     output['dataWorld']=data.to_json(orient='index', indent=4)
 
@@ -140,5 +154,5 @@ def load_data(filter1, filter2):
 
   
     return output
-# print (load_data())
+# print (region_df)
 # def main():
