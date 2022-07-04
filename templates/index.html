@@ -5,18 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Dashboard</title>
+    <title>Basic Charts</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.css"
-        integrity="sha512-FkNnPJevAkIHB3NqUiMadWNcoMcOCPQUMyF55JeAFZmPcSR6wK6TgZ0qL6bMrRqGNaaVS8CAwBYceORhdTUILQ=="
-        crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/rangeslider.js/2.3.3/rangeslider.js"
-        integrity="sha512-kto5vajVp7FrqTvPDaiIIo2k5lt/xoEyi0LTLzujAtdLQKvLCaxRZ2/qJVW2Fc5UeTr6lVlNs8yHupc5pzJUow=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script type="text/javascript">
         let alldata = {{ data| tojson }};
-        
         // let alldataworld = JSON.parse(alldata);
     </script>
     <script src="https://code.highcharts.com/maps/highmaps.js"></script>
@@ -25,29 +18,16 @@
     <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
     <script src="https://code.highcharts.com/maps/modules/accessibility.js"></script>
     <link rel="stylesheet" href="../static/css/style.css">
-    <link rel="stylesheet" href="../static/css/sidenav.css">
+   
 </head>
 
 <body>
-    <div class="sidenav">
 
-        <a href="#">Individuals using the Internet (% of population)</a>
-        <a href="#">Secure Internet servers</a>
-        <a href="#">Secure Internet servers (per 1 million people)</a>
-        <a href="#">Mobile cellular subscriptions</a>
-        <a href="#">Mobile cellular subscriptions (per 100 people)</a>
-        <a href="#">Fixed broadband subscriptions</a>
-        <a href="#">Fixed broadband subscriptions (per 100 people)</a>
-        <a href="#">Fixed telephone subscriptions</a>
-        <a href="#">Fixed telephone subscriptions (per 100 people)</a>
-    </div>
+        
 
 
-    <div class="main">
-        <div>
-            <div class="chart countries">
+        
                 
-                <div>
                     <form action="{{ url_for("plot_chart") }}" method="post">
                         <select name="filter1">
                             {% for o in data['filter1list'] %}
@@ -58,60 +38,64 @@
                             {% for o in data['filter2list'] %}
                             <option value="{{ o }}" {{ 'selected="selected"' if o==data['filter2']}}>{{ o }}</option>
                             {% endfor %}
-                        </select> 
+                        </select>
                         <input type="submit" value="Submit">
                     </form>
-                </div>
-                <div>
+                
+                <div style="width: 800px;">
                     <div id="plot"></div>
                 </div>
-            </div>
+             
+         
 
-            <div class="chart map">
+            <div style="float: left; width: 800px; height: 700px;">
                 <div id="container-map">
                     <div class="loading">
                         <i class="icon-spinner icon-spin icon-large"></i>
                         Loading data from World Bank...
                     </div>
                 </div>
-                <p> World Map</p>
-                <div>
-                    <input type="range" min="2000" max="2020" step="1" value="2000" data-orientation="vertical"
-                        name="year" onchange="updateChart(this.value)">
-                </div>
             </div>
-            <!-- <div style="clear:both;"> -->
-                 <div class="chart plot" id="pie-plot"></div>
-                 <div class="chart plot" id="bar-plot"></div>
-                 <div class="chart plot" id="line-plot"></div>
+                <div>
+                    <span id="show_slider_value" style="color:black;font-weight:bold;"></span><br>
+                    <input type="range" min="2000" max="2020" step="1" value="2000" name="year" onchange="updateChart(this.value)">
                 </div>
-        <!-- </div> -->
-    </div>
+         
+      
+        <div
+            style="clear:both; border-bottom: 1px solid black; border-left: 1px solid black; border-right: 1px solid black; height: 900px;">
+            <div id="myButtons"></div>
+            <div id='myDiv'></div>
+        
+        </div>
+
+        <div
+            style="width: 800px; float: left; border-right: 1px solid; height: 900px;">Gender chart
+        
+        </div>
+        <div
+            style="width: 800px; float: left; border-right: 1px solid; height: 900px;">Age chart
+        
+        </div>
+  
 
     <script type="text/javascript" src="../static/js/app.js"></script>
     <script type="text/javascript">
 
-        // filtering record by Year and Series Name
-        // console.log("title =" + title)
+        // Filtering record by Year and Series Name for both map, bar (and line plot)
+   
         function updateChart(year) {
-            console.log("year=" + year);
+            update_slider_value(year)
+            // console.log("year=" + year);
             filterResult = Object.values(JSON.parse(alldata.dataWorld)).filter(jd => jd.Year === parseInt(year) && jd.SeriesName === title);
             //   let filterResult = JSON.parse(alldata.dataWorld);
-            console.log("filterResult = " + filterResult);
+            // console.log("filterResult = " + filterResult);
             // console.log("alldata =" + alldata.dataWorld);
-            // let maxValue = 0;
             const jData = filterResult.map((value, index) => ({
                 code: value.Codes.toUpperCase(),
                 value: parseFloat(value.Values),
                 name: value.Country
             }));
-         
-         
-// for (var i in filterResult) {
-//   maxValue += filterResult[i].Values;
-// }
-//             console.log("maxValue=" +maxValue);
-
             drawChart(jData, year);
         };
         updateChart(2000);

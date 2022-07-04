@@ -1,49 +1,25 @@
 
 
-/* body{
-    background-color: da;
-} */
-
-.main{
+body{
     background-color: rgb(157, 151, 151);
-    margin-left: 200px;
-    height: 100vh;
+    padding: 10px;
+}
+
+
+
+#container-map {
+        height: 500px;
+        min-width: 310px;
+        max-width: 800px;
+        margin: 0 auto;
     }
 
-
   
-  .loading {
+.loading {
     margin-top: 10em;
     text-align: center;
     color: gray;
   }
 
-  .chart{
-      min-width: 25%;
-      margin: 20px;
-      float: left;
-      height: 400px;
-      box-sizing:border-box ;
-    
-  }
-
-  .countries {
-      min-width: 45%;
-  }
-
-  .map{
-      margin-top: 40px;
-      min-width:  45%;
-  }
-  
-  .map p{
-      background-color: white;
-      text-align: center;
-      font-size: 15px;
-  }
 
 
-.plot{
-    margin-top: 80px;
-    min-width: 45%;
-}

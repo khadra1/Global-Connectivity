@@ -49,10 +49,10 @@ def load_data(filter1, filter2):
     # Getting the first column names
     table_name = temp_df.iloc[2, 0]
 
-    # Reading the ITU excel file age and gender sheet to clean and turn into json object
+    # # Reading the ITU excel file age and gender sheet to clean and turn into json object
     # data_path = os.path.join(os.path.dirname(__file__), '..', 'data',
     #                          'ITU_regional_global_Key_ICT_indicator_aggregates_rev1_Jan_2022.xlsx')
-    # demo_df = pd.read_excel(data_path, header=None, sheet_name="Internet use by age and gender")
+    # demo_df= pd.read_excel(data_path, header=None, sheet_name="Internet use by age and gender")
 
     # dictionary of tables with key as table name and value as dataframe
     table_list = {}
@@ -70,8 +70,11 @@ def load_data(filter1, filter2):
         # using the year list and table names as column names
         region_df.columns = column_names
         table_list[table_name] = region_df
-
+    
+    
+    #empty dict to store output 
     output = {}
+    # filter for world countries bar chart and world map
     output['filter1list'] = list(world_data['Series Name'].unique())
     output['filter1'] = filter1
     output['filter2list'] = list(world_data['Country'].unique())
@@ -82,7 +85,9 @@ def load_data(filter1, filter2):
     output['y'] = world_data.values.tolist()[0]
     print (table_list)
 
-    
+  
+
+    # World regions internet usage excel sheet
     tracedata = {}
     table_list_keys = list(table_list.keys())
     for i in range(len(table_list_keys)):
@@ -93,7 +98,7 @@ def load_data(filter1, filter2):
         for j in range(len(regions)):
             tempregions[regions[j]] = tempdf.values.tolist()[j][1:]
         tracedata[table_list_keys[i]] = tempregions
-    output['tracedata'] = json.dumps(tracedata)
+    output['tracedata'] = tracedata
     output['dataWorld']=data.to_json(orient='index', indent=4)
 
 
