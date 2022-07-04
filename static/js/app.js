@@ -1,6 +1,7 @@
-console.log("data=" + alldata.dataWorld);
+console.log("data=" + alldata.x);
 // World countries bar chart
 let title = alldata.filter1;
+
 let trace1 = {
   x: alldata.x,
   y: alldata.y,
@@ -9,7 +10,7 @@ let trace1 = {
 };
 let data = [trace1];
 let layout = {
-  title: title 
+  title: title
 };
 Plotly.newPlot("plot", data, layout);
 
@@ -36,7 +37,8 @@ async function drawChart(data1, year) {
       borderWidth: 1
     },
 
-    colors: ['#004c6d', '#2d6484', '#4c7c9b', '#6996b3', '#86b0cc ', '#a3cbe5', '#c1e7ff]'],
+    colors: [ '#c1e7ff','#a3cbe5','#86b0cc','#6996b3','#4c7c9b','#2d6484',
+    '#004c6d'],
 
     title: {
       text: title + " " + year
@@ -74,6 +76,7 @@ async function drawChart(data1, year) {
     },
     
     colorAxis: {
+      dataClassColor: 'category',
       dataClasses: [{
         to: factor*2
       }, {
@@ -133,7 +136,11 @@ function drawLineChart(dataType) {
     y: alldata.tracedata[dataType].Africa,
     mode: 'lines+markers',
     connectgaps: true,
-    name: "Africa"
+    name: "Africa",
+    marker:{
+      color: '#004c6d', 
+      width: 0.2
+    }
   };
 
   let traceAmericas = {
@@ -141,7 +148,11 @@ function drawLineChart(dataType) {
     y: alldata.tracedata[dataType].Americas,
     mode: 'lines+markers',
     connectgaps: true,
-    name: "Americas"
+    name: "Americas",
+    marker:{
+      color: '#2b6989', 
+      width: 0.2
+    }
   };
 
   let traceArabStates = {
@@ -149,7 +160,11 @@ function drawLineChart(dataType) {
     y: alldata.tracedata[dataType].ArabStates,
     mode: 'lines+markers',
     connectgaps: true,
-    name: "ArabStates"
+    name: "ArabStates",
+    marker:{
+      color: '#4a86a5', 
+      width: 0.2
+    }
   };
 
   let traceAsiaPacific = {
@@ -157,14 +172,22 @@ function drawLineChart(dataType) {
     y: alldata.tracedata[dataType]["Asia-Pacicific"],
     mode: 'lines+markers',
     connectgaps: true,
-    name: "AsiaPacific"
+    name: "AsiaPacific",
+    marker:{
+      color: '#68a6c3', 
+      width: 0.2
+    }
   };
   let traceCIS = {
     x: yearsRange,
     y: alldata.tracedata[dataType].CIS,
     mode: 'lines+markers',
     connectgaps: true,
-    name: "CIS"
+    name: "CIS",
+    marker:{
+      color: '#86c6e1', 
+      width: 0.2
+    }
   };
 
   let traceEurope = {
@@ -172,7 +195,11 @@ function drawLineChart(dataType) {
     y: alldata.tracedata[dataType].Europe,
     mode: 'lines+markers',
     connectgaps: true,
-    name: "Europe"
+    name: "Europe",
+    marker:{
+      color: '#a6e7ff', 
+      width: 0.2
+    }
   };
 
   let regionData = [traceAfrica, traceAmericas, traceArabStates, traceAsiaPacific, traceCIS, traceEurope];
@@ -223,7 +250,7 @@ let genderTrace3 = {
 };
 
 
-let dataGender = [genderTrace2,genderTrace1,genderTrace3];
+let dataGender = [genderTrace1,genderTrace2,genderTrace3];
 
 let layoutGender = {barmode: 'group'};
 

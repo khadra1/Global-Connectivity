@@ -76,6 +76,6 @@ select, input{
 .slider{
     position: absolute;
     bottom:-4rem;
-    right:2rem;
+    right:6rem;
     z-index: 100;
 }
