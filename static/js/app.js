@@ -1,22 +1,35 @@
+console.log("data=" + alldata.dataWorld);
 // World countries bar chart
 let title = alldata.filter1;
 let trace1 = {
   x: alldata.x,
   y: alldata.y,
+  marker:{color: '#004c6d'},
   type: 'bar'
 };
 let data = [trace1];
 let layout = {
-  title: title
+  title: title 
 };
 Plotly.newPlot("plot", data, layout);
 
+function countDigits(number){
+  return parseInt(number).toString().length;
+}
+
 // World map
 async function drawChart(data1, year) {
+  console.log("data1=", data1)
+  let avg = 0;
+  data1.forEach(elem=>avg+=countDigits(elem.value))
+  //10,20,30,40
+  //total number of element -> average length of digits = 2
+  avg = parseInt(avg / data1.length);
+  console.log("average ",avg)
   const topology = await fetch(
     'https://code.highcharts.com/mapdata/custom/world.topo.json'
   ).then(response => response.json());
-
+  let factor = Math.pow(10,avg); // 0 -> 100,
   return Highcharts.mapChart('container-map', {
     chart: {
       map: topology,
@@ -59,27 +72,24 @@ async function drawChart(data1, year) {
       symbolRadius: 0,
       symbolHeight: 14
     },
-
+    
     colorAxis: {
       dataClasses: [{
-        to: 3
+        to: factor*2
       }, {
-        from: 3,
-        to: 10
+        from: factor*2,
+        to: factor*4
       }, {
-        from: 10,
-        to: 30
+        from: factor*4,
+        to: factor*6
       }, {
-        from: 30,
-        to: 100
+        from: factor*6,
+        to: factor*8
       }, {
-        from: 100,
-        to: 300
+        from: factor*8,
+        to: factor*10
       }, {
-        from: 300,
-        to: 100000000
-      }, {
-        from: 200000000
+        from: factor*10
       }]
     },
 
@@ -129,7 +139,7 @@ function drawLineChart(dataType) {
   let traceAmericas = {
     x: yearsRange,
     y: alldata.tracedata[dataType].Americas,
-    mode: 'lines',
+    mode: 'lines+markers',
     connectgaps: true,
     name: "Americas"
   };
@@ -145,7 +155,7 @@ function drawLineChart(dataType) {
   let traceAsiaPacific = {
     x: yearsRange,
     y: alldata.tracedata[dataType]["Asia-Pacicific"],
-    mode: 'lines',
+    mode: 'lines+markers',
     connectgaps: true,
     name: "AsiaPacific"
   };
@@ -160,7 +170,7 @@ function drawLineChart(dataType) {
   let traceEurope = {
     x: yearsRange,
     y: alldata.tracedata[dataType].Europe,
-    mode: 'lines',
+    mode: 'lines+markers',
     connectgaps: true,
     name: "Europe"
   };
@@ -172,38 +182,43 @@ function drawLineChart(dataType) {
     showlegend: true
   };
 
-  Plotly.newPlot('myDiv', regionData, layoutRegion);
+  Plotly.newPlot('line-chart', regionData, layoutRegion);
 }
 function update_slider_value(x)
 {
  document.getElementById("show_slider_value").innerHTML=x;
 }
+let titleGender = 'Percentage of individuals using the Internet, by sex'
+let genderData = JSON.parse(alldata.genderData)
+
+let values = Object.values(genderData);
+
 
 // Percentage of individuals using the Internet, by Gender
 let genderTrace1 = {
   x: ['World', 'Africa', 'Americas', 'Arab States', 'Asia-Pacific', 'CIS', 'Europe'],
-  y: genderData,
-  marker: {color:["#004c6d","#6996b3","#c1e7ff"]
+  y: values.map(each=>each['% Total 2020']),
+  marker: {color:'#004c6d'
 },
-  name: 'Total',
+  name: '% Total 2020',
   type: 'bar'
 };
 
 let genderTrace2 = {
   x: ['World', 'Africa', 'Americas', 'Arab States', 'Asia-Pacific', 'CIS', 'Europe'],
-  y: genderData,
-  marker: {color:["#004c6d","#6996b3","#c1e7ff"]
+  y: values.map(each=>each['% Female 2020']),
+  marker: {color: '#6996b3'
 },
-  name: 'Female',
+  name: '% Female 2020',
   type: 'bar'
 };
 
 let genderTrace3 = {
   x: ['World', 'Africa', 'Americas', 'Arab States', 'Asia-Pacific', 'CIS', 'Europe'],
-  y: genderData,
-  marker: {color:["#004c6d","#6996b3","#c1e7ff"]
+  y: values.map(each=>each['% Male 2020']),
+  marker: {color: '#c1e7ff'
 },
-  name: 'Male',
+  name: '% Male 2020',
   type: 'bar'
 };
 
@@ -214,32 +229,33 @@ let layoutGender = {barmode: 'group'};
 
 Plotly.newPlot('gender-plot', dataGender, layoutGender);
 
-
+let ageData = JSON.parse(alldata.ageData)
+values = Object.values(ageData);
 // Percentage of individuals using the Internet, by Age
 let ageTrace1 = {
   x: ['World', 'Africa', 'Americas', 'Arab States', 'Asia-Pacific', 'CIS', 'Europe'],
-  y: ageData,
-  marker: {color:["#004c6d","#6996b3","#c1e7ff"]
+  y: values.map(each=>each['% Total 2020']),
+  marker: {color:'#004c6d'
 },
-  name: 'Total',
+  name: '% Total 2020',
   type: 'bar'
 };
 
 let ageTrace2 = {
   x: ['World', 'Africa', 'Americas', 'Arab States', 'Asia-Pacific', 'CIS', 'Europe'],
-  y: ageData,
-  marker: {color:["#004c6d","#6996b3","#c1e7ff"]
+  y: values.map(each=>each['% Youth(15-24) 2020']),
+  marker: {color:'#6996b3'
 },
-  name: 'Female',
+  name: '% Youth(15-24) 2020',
   type: 'bar'
 };
 
 let ageTrace3 = {
   x: ['World', 'Africa', 'Americas', 'Arab States', 'Asia-Pacific', 'CIS', 'Europe'],
-  y: ageData,
-  marker: {color:["#004c6d","#6996b3","#c1e7ff"]
+  y: values.map(each=>each['% Rest of Population 2020']),
+  marker: {color:'#c1e7ff'
 },
-  name: 'Male',
+  name: '% Rest of Population 2020',
   type: 'bar'
 };
 
