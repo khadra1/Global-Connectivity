@@ -55,10 +55,10 @@ def load_data(filter1, filter2):
     gender_df = pd.read_excel(data_path, skiprows=(0,1), sheet_name="Internet use by sex & age")
     # Get the gender tables
     gender_df=gender_df.iloc[0:16,0:18] 
-    #Drop unnecessary columns
+    # Drop unnecessary columns
     cols = [1,2,3,4,5,6,7,8]
     gender_df.drop(gender_df.columns[cols],axis=1,inplace=True)
-    # # Drop unnecessary rows
+    # Drop unnecessary rows
     gender_df = gender_df.drop(0)
     gender_df = gender_df.drop(1)
     gender_df = gender_df.drop(3)
@@ -68,15 +68,19 @@ def load_data(filter1, filter2):
     gender_df = gender_df.drop(7)
     gender_df = gender_df.drop(8)
     gender_df = gender_df.drop(9)
+    # Rename columns and reset the index
     gender_df.columns=['Percentage of individuals using the Internet, by sex', '% Total 2020','% Female 2020','% Male 2020']
     gender_df.reset_index(inplace=True, drop=True)  
 
+
+    # Reading the ITU excel file age and gender sheet to clean and turn into json object
     data_path = os.path.join(os.path.dirname(__file__), '..', 'data',
                              'ITU_regional_global_Key_ICT_indicator_aggregates_rev1_Jan_2022.xlsx')
     age_df = pd.read_excel(data_path, skiprows=range(0,19),skipfooter=10 , sheet_name="Internet use by sex & age")
     age_table_name=age_df.iloc[0,0]
-    # Get the age tables from the gender_age excel file
+    # Get the relevant age tables from the excel file
     age_df=age_df.iloc[3:17,0:8]
+    # Drop unnecessary rows
     age_df = age_df.drop(4)
     age_df = age_df.drop(5)
     age_df = age_df.drop(6)
@@ -84,12 +88,12 @@ def load_data(filter1, filter2):
     age_df = age_df.drop(8)
     age_df = age_df.drop(9)
     age_df = age_df.drop(10)
+     # Drop unnecessary columns
     cols= [1,2,3,4]
     age_df.drop(age_df.columns[cols],axis=1,inplace=True)
+    # Rename columns and reset the index
     age_df.columns=[age_table_name,'% Total 2020','% Youth(15-24) 2020','% Rest of Population 2020']
     age_df.reset_index(inplace=True, drop=True)    
-
-
 
     # dictionary of tables with key as table name and value as dataframe
     table_list = {}
@@ -120,12 +124,7 @@ def load_data(filter1, filter2):
     output['y'] = world_data.values.tolist()[0]
     output['genderData']= gender_df.to_json(orient='index', indent=4)
     output['ageData']= age_df.to_json(orient='index', indent=4)
-   
-    print(age_df)
-    
-     
 
-  
 
     # World regions internet usage excel sheet
     tracedata = {}
@@ -143,8 +142,6 @@ def load_data(filter1, filter2):
 
 
 
-
-  
     return output
 # print (region_df)
 # def main():

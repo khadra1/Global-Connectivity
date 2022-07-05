@@ -210,11 +210,15 @@ function drawLineChart(dataType) {
   };
 
   Plotly.newPlot('line-chart', regionData, layoutRegion);
-}
+};
+
+
 function update_slider_value(x)
 {
  document.getElementById("show_slider_value").innerHTML=x;
-}
+};
+
+
 let titleGender = 'Percentage of individuals using the Internet, by sex'
 let genderData = JSON.parse(alldata.genderData)
 
@@ -252,7 +256,11 @@ let genderTrace3 = {
 
 let dataGender = [genderTrace1,genderTrace2,genderTrace3];
 
-let layoutGender = {barmode: 'group'};
+let layoutGender = {barmode: 'group',
+showlegend: true,
+legend: {orientation: 'h'}
+
+};
 
 Plotly.newPlot('gender-plot', dataGender, layoutGender);
 
@@ -288,6 +296,10 @@ let ageTrace3 = {
 
 let dataAge = [ageTrace1, ageTrace2, ageTrace3];
 
-let layoutAge = {barmode: 'group'};
+let layoutAge = {barmode: 'group',
+showlegend: true,
+legend: {orientation: 'h'}
+
+};
 
 Plotly.newPlot('age-plot', dataAge, layoutAge);
