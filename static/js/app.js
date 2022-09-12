@@ -10,7 +10,14 @@ let trace1 = {
 };
 let data = [trace1];
 let layout = {
-  title: title
+  title: title,
+  margin: {
+    l: 50,
+    r: 50,
+    b: 60,
+    t: 50,
+    pad: 4
+    }
 };
 Plotly.newPlot("plot", data, layout);
 
@@ -258,9 +265,19 @@ let dataGender = [genderTrace1,genderTrace2,genderTrace3];
 
 let layoutGender = {barmode: 'group',
 showlegend: true,
-legend: {orientation: 'h'}
-
-};
+legend: {orientation: 'h',
+xanchor: "center",
+		yanchor: "bottom",
+		y: 1.0,
+		x: 0.5},
+margin: {
+  l: 50,
+  r: 50,
+  b: 60,
+  t: 50,
+  pad: 4
+}
+}
 
 Plotly.newPlot('gender-plot', dataGender, layoutGender);
 
@@ -298,8 +315,18 @@ let dataAge = [ageTrace1, ageTrace2, ageTrace3];
 
 let layoutAge = {barmode: 'group',
 showlegend: true,
-legend: {orientation: 'h'}
-
-};
+legend: {orientation: 'h',
+xanchor: "center",
+yanchor: "bottom",
+y: 1.0,
+x: 0.5},
+margin: {
+l: 50,
+r: 50,
+b: 60,
+t: 50,
+pad: 4
+}
+}
 
 Plotly.newPlot('age-plot', dataAge, layoutAge);

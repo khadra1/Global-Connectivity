@@ -4,11 +4,11 @@ import json
 from json import dumps
 
 
-def load_data(filter1, filter2):
+def load_data(file_name, filter_series, filter_country):
     output = {}
     # Import the world internet data from world bank and rename columns for merging with location data
     data_path = os.path.join(os.path.dirname(
-        __file__), '..', 'data', 'world_bank_internet_data.csv')
+        __file__), '..', 'data',file_name)
     world_data = pd.read_csv(data_path, skipfooter=446, engine="python")
     world_data = world_data.replace("..", 0)
     # Rename the Country and Country Codes column to allow merging later on
@@ -54,20 +54,12 @@ def load_data(filter1, filter2):
                              'ITU_regional_global_Key_ICT_indicator_aggregates_rev1_Jan_2022.xlsx')
     gender_df = pd.read_excel(data_path, skiprows=(0,1), sheet_name="Internet use by sex & age")
     # Get the gender tables
-    gender_df=gender_df.iloc[0:16,0:18] 
-    # Drop unnecessary columns
-    cols = [1,2,3,4,5,6,7,8]
-    gender_df.drop(gender_df.columns[cols],axis=1,inplace=True)
-    # Drop unnecessary rows
-    gender_df = gender_df.drop(0)
-    gender_df = gender_df.drop(1)
-    gender_df = gender_df.drop(3)
-    gender_df = gender_df.drop(4)
-    gender_df = gender_df.drop(5)
-    gender_df = gender_df.drop(6)
-    gender_df = gender_df.drop(7)
-    gender_df = gender_df.drop(8)
-    gender_df = gender_df.drop(9)
+    gender_df=gender_df.iloc[0:16,0:18]
+
+    # Drop unnecessary columns and rows
+    gender_df = drop_cols(gender_df, [1,2,3,4,5,6,7,8])
+    gender_df = drop_rows(gender_df, [0,1,3,4,5,6,7,8,9])
+        
     # Rename columns and reset the index
     gender_df.columns=['Percentage of individuals using the Internet, by sex', '% Total 2020','% Female 2020','% Male 2020']
     gender_df.reset_index(inplace=True, drop=True)  
@@ -80,17 +72,11 @@ def load_data(filter1, filter2):
     age_table_name=age_df.iloc[0,0]
     # Get the relevant age tables from the excel file
     age_df=age_df.iloc[3:17,0:8]
-    # Drop unnecessary rows
-    age_df = age_df.drop(4)
-    age_df = age_df.drop(5)
-    age_df = age_df.drop(6)
-    age_df = age_df.drop(7)
-    age_df = age_df.drop(8)
-    age_df = age_df.drop(9)
-    age_df = age_df.drop(10)
-     # Drop unnecessary columns
-    cols= [1,2,3,4]
-    age_df.drop(age_df.columns[cols],axis=1,inplace=True)
+
+    # Drop unnecessary rows and columns
+    age_df = drop_rows(age_df, [4,5,6,7,8,9,10])
+    age_df = drop_cols(age_df, [1,2,3,4])
+  
     # Rename columns and reset the index
     age_df.columns=[age_table_name,'% Total 2020','% Youth(15-24) 2020','% Rest of Population 2020']
     age_df.reset_index(inplace=True, drop=True)    
@@ -115,11 +101,11 @@ def load_data(filter1, filter2):
     output = {}
     # filter for world countries bar chart and world map
     output['filter1list'] = list(world_data['Series Name'].unique())
-    output['filter1'] = filter1
+    output['filter1'] = filter_series
     output['filter2list'] = list(world_data['Country'].unique())
-    output['filter2'] = filter2
-    world_data = world_data.loc[world_data['Series Name'] == filter1]
-    world_data = world_data.loc[world_data['Country'] == filter2]
+    output['filter2'] = filter_country
+    world_data = world_data.loc[world_data['Series Name'] == filter_series]
+    world_data = world_data.loc[world_data['Country'] == filter_country]
     output['x'] = list(world_data.columns.values)[4:]
     output['y'] = world_data.values.tolist()[0]
     output['genderData']= gender_df.to_json(orient='index', indent=4)
@@ -145,3 +131,12 @@ def load_data(filter1, filter2):
     return output
 # print (region_df)
 # def main():
+
+def drop_rows(df,rows):
+    for row in rows:
+        df = df.drop(row)
+    return df
+
+
+def drop_cols(df, cols):
+    df= df.drop(df.columns[cols],axis=1,inplace=True)
