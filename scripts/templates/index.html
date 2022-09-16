@@ -30,6 +30,7 @@
 </head>
 
 <body>
+    <div style="max-width: 1000px;">
     <h1>World Connectivity Visualisation Dashboard</h1>
 
     <form action="{{ url_for("plot_chart") }}" method="post">
@@ -47,11 +48,11 @@
     </form>
 
     <div class="row">
-        <div class="col-sm-12 col-lg-4">
+        <div class="col-sm-6">
             <h2>World Countries Data</h2>
             <div id="plot"></div>
         </div>
-        <div id="map-box" class="col-sm-12 col-lg-4">
+        <div id="map-box" class="col-sm-6">
             <h2>World Map</h2>
             <div class="slider">
                 <span id="show_slider_value"></span><br>
@@ -66,10 +67,7 @@
             </div>
 
         </div>
-        <div class="col-sm-12 col-lg-4">
-            <h2>Percentage of Individuals using the Internet, by Sex</h2>
-            <div id="gender-plot"></div>
-        </div>
+    
       </div>
       
       <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
@@ -78,22 +76,25 @@
         <div class="col-6 col-md-4">.col-6 .col-md-4</div>
         <div class="col-6 col-md-4">.col-6 .col-md-4</div> -->
         <!-- <div class="box-big"> -->
-            <div class="col-sm-12 col-md-6">
+            <div class="col-sm-12">
                 <h2> World Region Data</h2>
                 <div id="myButtons"></div>
                 <div id='line-chart'></div>
     
             </div>
-            <div class="col-sm-12 col-md-6">
+            </div>
+            <div class="row">
+            <div class="col-sm-6">
                 <h2>Percentage of Individuals using the Internet, by Age</h2>
                 <div id="age-plot"></div>
             </div>
+            <div class="col-sm-6">
+                <h2>Percentage of Individuals using the Internet, by Sex</h2>
+                <div id="gender-plot"></div>
+            </div>
         <!-- </div> -->
       </div>
-
-
-
-
+      </div>
 
 
     <script type="text/javascript" src="../static/js/app.js"></script>
@@ -117,6 +118,7 @@
         };
         updateChart(2000);
     </script>
+    
 </body>
 
 </html>
