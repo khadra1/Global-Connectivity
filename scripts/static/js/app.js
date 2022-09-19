@@ -1,10 +1,9 @@
-console.log("data=" + alldata.x);
 // World countries bar chart
-let title = alldata.filter1;
+let title = allData.filter1;
 
 let trace1 = {
-  x: alldata.x,
-  y: alldata.y,
+  x: allData.x,
+  y: allData.y,
   marker:{color: '#004c6d'},
   type: 'bar'
 };
@@ -41,7 +40,8 @@ async function drawChart(data1, year) {
   return Highcharts.mapChart('container-map', {
     chart: {
       map: topology,
-      borderWidth: 1
+      borderWidth: 1,
+      height: 490,
     },
 
     colors: [ '#c1e7ff','#a3cbe5','#86b0cc','#6996b3','#4c7c9b','#2d6484',
@@ -123,7 +123,7 @@ async function drawChart(data1, year) {
 
 
 const yearsRange = [2005, 2006, 2007, 2008, 2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021];
-const differentDataKeys = Object.keys(alldata.tracedata)
+const differentDataKeys = Object.keys(allData.tracedata)
 
 function printBtn() {
   var myButtons=document.getElementById("myButtons");
@@ -140,7 +140,7 @@ drawLineChart("Fixed-telephone subscriptions");
 function drawLineChart(dataType) {
   let traceAfrica = {
     x: yearsRange,
-    y: alldata.tracedata[dataType].Africa,
+    y: allData.tracedata[dataType].Africa,
     mode: 'lines+markers',
     connectgaps: true,
     name: "Africa",
@@ -152,7 +152,7 @@ function drawLineChart(dataType) {
 
   let traceAmericas = {
     x: yearsRange,
-    y: alldata.tracedata[dataType].Americas,
+    y: allData.tracedata[dataType].Americas,
     mode: 'lines+markers',
     connectgaps: true,
     name: "Americas",
@@ -164,7 +164,7 @@ function drawLineChart(dataType) {
 
   let traceArabStates = {
     x: yearsRange,
-    y: alldata.tracedata[dataType].ArabStates,
+    y: allData.tracedata[dataType].ArabStates,
     mode: 'lines+markers',
     connectgaps: true,
     name: "ArabStates",
@@ -176,7 +176,7 @@ function drawLineChart(dataType) {
 
   let traceAsiaPacific = {
     x: yearsRange,
-    y: alldata.tracedata[dataType]["Asia-Pacicific"],
+    y: allData.tracedata[dataType]["Asia-Pacicific"],
     mode: 'lines+markers',
     connectgaps: true,
     name: "AsiaPacific",
@@ -187,7 +187,7 @@ function drawLineChart(dataType) {
   };
   let traceCIS = {
     x: yearsRange,
-    y: alldata.tracedata[dataType].CIS,
+    y: allData.tracedata[dataType].CIS,
     mode: 'lines+markers',
     connectgaps: true,
     name: "CIS",
@@ -199,7 +199,7 @@ function drawLineChart(dataType) {
 
   let traceEurope = {
     x: yearsRange,
-    y: alldata.tracedata[dataType].Europe,
+    y: allData.tracedata[dataType].Europe,
     mode: 'lines+markers',
     connectgaps: true,
     name: "Europe",
@@ -227,7 +227,7 @@ function update_slider_value(x)
 
 
 let titleGender = 'Percentage of individuals using the Internet, by sex'
-let genderData = JSON.parse(alldata.genderData)
+let genderData = JSON.parse(allData.genderData)
 
 let values = Object.values(genderData);
 
@@ -281,7 +281,7 @@ margin: {
 
 Plotly.newPlot('gender-plot', dataGender, layoutGender);
 
-let ageData = JSON.parse(alldata.ageData)
+let ageData = JSON.parse(allData.ageData)
 values = Object.values(ageData);
 // Percentage of individuals using the Internet, by Age
 let ageTrace1 = {

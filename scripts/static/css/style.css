@@ -87,3 +87,15 @@ margin-top: 20px;
 height: 42vh;
 width: 31%;
 } */
+
+.slider{
+    position: absolute;
+    right: 23rem;
+    z-index: 100;
+    margin-top: 410px;
+
+}
+
+.container h1{
+    MARGIN-TOP: 60PX;
+}
