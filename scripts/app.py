@@ -31,7 +31,7 @@ def plot_chart():
     if request.method == "POST":
         if "filter1" not in request.form:
             filter2 = request.form.get("filter2")
-            f[1] = filter2 
+            f[1] = filter2
             data = load_data(f[0],filter2)
         elif "filter2" not in request.form:
             filter1 = request.form.get("filter1")

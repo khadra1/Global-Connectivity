@@ -249,7 +249,12 @@ function drawLineChart(dataType, btnId) {
     showlegend: true,
   };
 
-  Plotly.newPlot("line-chart", regionData, layoutRegion);
+  Plotly.newPlot("line-chart", regionData, layoutRegion, {toImageButtonOptions: {
+    filename: 'region_chart',
+    width: 800,
+    height: 600,
+    format: 'svg'
+  }});
   updateColor(btnId);
 }
 
@@ -346,9 +351,14 @@ let layoutGender = {
 };
 
 console.log("before");
-Plotly.newPlot("gender-plot", dataGender, layoutGender);
-console.log("after");
-alert("ey");
+Plotly.newPlot("gender-plot", dataGender, layoutGender, {toImageButtonOptions: {
+  filename: 'gender_chart',
+  width: 800,
+  height: 600,
+  format: 'svg'
+}});
+
+
 
 let ageData = JSON.parse(allData.ageData);
 values = Object.values(ageData);
@@ -422,4 +432,10 @@ let layoutAge = {
   },
 };
 
-Plotly.newPlot("age-plot", dataAge, layoutAge);
+Plotly.newPlot("age-plot", dataAge, layoutAge, {toImageButtonOptions: {
+  filename: 'age_chart',
+  width: 800,
+  height: 600,
+  format: 'svg'
+}
+});;
