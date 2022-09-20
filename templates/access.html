@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Internet Access Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.5/dist/umd/popper.min.js"
+    integrity="sha384-Xe+8cL9oJa6tN/veChSP7q+mnSPaj5Bcu9mPX5F5xIGE0DVittaqT5lorf0EI7Vk"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.min.js"
+    integrity="sha384-kjU+l4N0Yf4ZOJErLsIcvOU2qSb74wXpOhqTvwVx3OElZRweTnQ6d31fXEoRD1Jy"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script type="text/javascript">
+    let allData = {{ data| tojson }};
+  </script>
+  <script src="https://code.highcharts.com/maps/highmaps.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/data.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/exporting.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/offline-exporting.js"></script>
+  <script src="https://code.highcharts.com/maps/modules/accessibility.js"></script>
+  <link rel="stylesheet" href="../../static/css/style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css">
+
+
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="/">Home</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
+        aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarCollapse">
+        <ul class="navbar-nav me-auto mb-2 mb-md-0">
+          <li class="nav-item">
+            <a class="nav-link active" href="#">Internet Access</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/internet-usage">Internet Usage</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container">
+    <h1 class="text-center mb-5"> Internet Access Dashboard</h1>
+
+    <hr>
+
+    <div class="row gx-5">
+      <div class="col-sm-5">
+        <h2 class="text-center">Countries Data</h2>
+        <div id="plot"></div>
+        <form action="{{ url_for("plot_chart") }}" method="post">
+          <div class="row">
+            <!-- <select class="form-select w-75" id="filter1" name="filter1">
+              {% for o in data['filter1list'] %}
+              <option value="{{ o }}" {{ 'selected="selected"' if o==data['filter1']}}>{{ o }}</option>
+              {% endfor %}
+            </select> -->
+            <select class="form-select col-8 w-75" name="filter2">
+              {% for o in data['filter2list'] %}
+              <option value="{{ o }}" {{ 'selected="selected"' if o==data['filter2']}}>{{ o }}</option>
+              {% endfor %}
+            </select>
+            <input id="submit-country-data" class="btn btn-info col-4 w-25" type="submit" value="Submit">
+          </div>
+        </form>
+      </div>
+      <div id="map-box" class="col-sm-7">
+        <h2 class="text-center mb-5">World Map</h2>
+        <div class="slider">
+          <span id="show_slider_value"></span><br>
+          <input type="range" min="2000" max="2020" step="1" value="2000" name="year"
+            onchange="updateChart(this.value)">
+        </div>
+        <div id="container-map">
+          <div class="loading">
+            <i class="icon-spinner icon-spin icon-large"></i>
+            Loading data from World Bank...
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="data-form mt-5 mb-5">
+        <form action="{{ url_for("plot_chart") }}" method="post">
+          <div class="row">
+            <select class="form-select w-75" id="filter1" name="filter1">
+              {% for o in data['filter1list'] %}
+              <option value="{{ o }}" {{ 'selected="selected"' if o==data['filter1']}}>{{ o }}</option>
+              {% endfor %}
+            </select>
+            <!-- <select class="form-select" id="filter2" name="filter2">
+              {% for o in data['filter2list'] %}
+              <option value="{{ o }}" {{ 'selected="selected"' if o==data['filter2']}}>{{ o }}</option>
+              {% endfor %}
+            </select> -->
+            <input id="submit-world-map" class="btn btn-info float-right w-25" type="submit" value="Submit">
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+    <div class="row">
+      <!-- <div class="col-6 col-md-4">.col-6 .col-md-4</div>
+        <div class="col-6 col-md-4">.col-6 .col-md-4</div>
+        <div class="col-6 col-md-4">.col-6 .col-md-4</div> -->
+      <!-- <div class="box-big"> -->
+      <div class="col-sm-12">
+        <h2> Region Data</h2>
+        <div id="myButtons"></div>
+        <div id='line-chart'></div>
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-6">
+        <h2>Percentage of Individuals using the Internet, by Age</h2>
+        <div id="age-plot"></div>
+      </div>
+      <div class="col-sm-6">
+        <h2>Percentage of Individuals using the Internet, by Sex</h2>
+        <div id="gender-plot"></div>
+      </div>
+      <!-- </div> -->
+    </div>
+  </div>
+
+  <div class="container">
+    <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 border-top">
+      <p class="col-md-4 mb-0 text-muted">&copy; 2022 Company, Inc</p>
+
+      <a href="/"
+        class="col-md-4 d-flex align-items-center justify-content-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+        <svg class="bi me-2" width="40" height="32">
+          <use xlink:href="#bootstrap" />
+        </svg>
+      </a>
+
+      <ul class="nav col-md-4 justify-content-end">
+        <li class="nav-item"><a href="/" class="nav-link px-2 text-muted">Home</a></li>
+        <li class="nav-item"><a href="/online" class="nav-link px-2 text-muted">online</a></li>
+        <li class="nav-item"><a href="/howTo" class="nav-link px-2 text-muted">How to</a></li>
+      </ul>
+    </footer>
+  </div>
+  <script type="text/javascript" src="../static/js/app.js"></script>
+  <script type="text/javascript">
+
+    // Filtering record by Year and Series Name for both map, bar (and line plot)
+
+    function updateChart(year) {
+      update_slider_value(year)
+      // console.log("year=" + year);
+      filterResult = Object.values(JSON.parse(allData.dataWorld)).filter(jd => jd.Year === parseInt(year) && jd.SeriesName === title);
+      //   let filterResult = JSON.parse(allData.dataWorld);
+      // console.log("filterResult = " + filterResult);
+      // console.log("allData =" + allData.dataWorld);
+      const jData = filterResult.map((value, index) => ({
+        code: value.Codes.toUpperCase(),
+        value: parseFloat(value.Values),
+        name: value.Country
+      }));
+      drawChart(jData, year);
+    };
+    updateChart(2000);
+  </script>
+
+</body>
+
+</html>
