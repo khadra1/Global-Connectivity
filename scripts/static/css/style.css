@@ -97,5 +97,9 @@ width: 31%;
 }
 
 .container h1{
-    MARGIN-TOP: 60PX;
+    margin-top: 60PX;
+}
+
+#myButtons button {
+    border: 1px solid white;
 }

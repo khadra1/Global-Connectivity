@@ -124,6 +124,20 @@ def get_world_bank_region_data(filename):
     regions_data = global_regions.pivot(index='Country', columns='Series Name', values='2021')\
             .reset_index()
     regions_data.columns.name=None
+    
+    indexes = regions_data.index
+    for index in indexes:
+        if index.startswith('Borrowed'):
+            regions_data.loc[index,'Cat'] = 'Borrowed'
+        elif index.startswith('Made') or  index.startswith('Use') or  index.startswith('Used') :
+            regions_data.loc[index,'Cat'] = 'Payment'
+        elif index.startswith('Received') :
+            regions_data.loc[index,'Cat'] = 'Received'
+        elif index.startswith('Saved') or  index.startswith('Store') :
+            regions_data.loc[index,'Cat'] = 'Saving'
+
+    # regions_data[regions_data['Cat']=='Saving'].transpose()
+    regions_data.transpose()
     return regions_data
 
 
@@ -183,12 +197,15 @@ def apply_filters(world_data, data, age_df, gender_df,region_tables, filter1, fi
     output['filter1'],output['filter2'] = filter1, filter2
     world_data = world_data.loc[(world_data['Series Name'] == filter1) & (world_data['Country'] == filter2)]
 
+
     # x, y variables for the countries bar chart
     output['x'], output['y'] = list(world_data.columns.values)[4:], world_data.values.tolist()[0]
 
     # # Variables for the Gender and Age charts 
     output['genderData']= gender_df.to_json(orient='index', indent=4)
     output['ageData']= age_df.to_json(orient='index', indent=4)
+
+    # output['usageData']=regions_data.tojson(orient='index', indent=4)
 
     # World regions internet usage excel sheet
     tracedata = {}
